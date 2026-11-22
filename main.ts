@@ -1,3 +1,11 @@
+// Tiny stack VM for make.fun's tiny-stack-vm-01: runs one program.bin per
+// instance and answers with its stdout bytes + exit code. Exit codes: 0 halt;
+// traps 2 stack underflow, 3 stack overflow, 4 div/mod by zero,
+// 5 unknown opcode, 6 bad memory address, 7 call-stack overflow,
+// 8 return with empty call stack, 9 pc out of range or truncated immediate,
+// 10 step limit (1,000,000), 11 output limit (65,536 bytes).
+// T[opcode] = [immediate bytes, values popped, values pushed].
+// Reference: kit program/generator/subject/vm.mjs; ISA: .../subject/ISA.md.
 import {mkdirSync,readdirSync,readFileSync,writeFileSync} from 'node:fs';
 import {join} from 'node:path';
 const T={0:[0,0,0],1:[1,0,1],2:[4,0,1],3:[0,1,0],4:[0,1,2],5:[0,2,2],6:[0,2,3],7:[0,3,3],16:[0,2,1],17:[0,2,1],18:[0,2,1],19:[0,2,1],20:[0,2,1],21:[0,2,1],22:[0,2,1],23:[0,1,1],24:[0,2,1],25:[0,2,1],26:[0,2,1],27:[0,1,1],28:[0,2,1],29:[0,2,1],30:[0,2,1],32:[0,2,1],33:[0,2,1],34:[0,2,1],48:[2,0,0],49:[2,1,0],50:[2,1,0],51:[2,0,0],52:[0,0,0],64:[0,1,1],65:[0,2,0],80:[0,1,0],81:[0,1,0],82:[0,0,1],83:[0,1,0]};
